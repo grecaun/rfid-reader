@@ -7,6 +7,28 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <ListView x:Name="chipNumbers" Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5,5,35">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Dec" Width="Auto" DisplayMemberBinding="{Binding DecNumber}" />
+                    <GridViewColumn Header="Hex" Width="Auto" DisplayMemberBinding="{Binding HexNumber}" />
+                    <GridViewColumn Header="Ant" Width="Auto" DisplayMemberBinding="{Binding AntennaNumber}" />
+                    <GridViewColumn Header="Dev" Width="Auto" DisplayMemberBinding="{Binding DeviceNumber}" />
+                    <GridViewColumn Header="No" Width="Auto" DisplayMemberBinding="{Binding ReadNumber}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid VerticalAlignment="Bottom" Height="35" Width="Auto" HorizontalAlignment="Center" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Serial Port" Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto" Grid.Column="0" />
+            <ComboBox Name="serialPortCB" Height="Auto" Width="70" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" />
+            <Button Content="Refresh" Name="refreshBtn" Width="Auto" Padding="10,0,10,0" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Grid.Column="2" Click="refreshBtn_Click" />
+            <Button Content="Connect" Name="connectBtn" Width="Auto" Padding="10,0,10,0" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Grid.Column="3" Click="connectBtn_Click" />
+        </Grid>
     </Grid>
 </Window>
