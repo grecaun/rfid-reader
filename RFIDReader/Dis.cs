@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace RFIDReader
 {
+    /**
+     *
+     * This is code from the disk provided with the reader I am using.
+     * 
+     */
     class Dis
     {
         // Parameter Addresses
