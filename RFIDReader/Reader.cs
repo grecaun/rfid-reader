@@ -8,10 +8,11 @@ namespace RFIDReader
 {
     class Reader
     {
-        byte deviceNo = 0;
         int Delay = 500;
+        byte deviceNo = 0;
         bool KeepAlive = false;
         int counter = 1;
+        RFIDSerial serial = null;
 
         MainWindow mWindow;
 
@@ -19,6 +20,11 @@ namespace RFIDReader
         {
             this.Delay = delay;
             this.mWindow = mWindow;
+        }
+
+        public void SetSerial(RFIDSerial serial)
+        {
+            this.serial = serial;
         }
 
         public void Run()

@@ -24,14 +24,15 @@ namespace RFIDReader
     {
         public static byte deviceNo = 0;
         private static Thread readingThread;
-        private static Reader reader;
+        private static NewReader reader;
         private static int ReadNo = 1;
+        RFIDSerial serial;
 
         public MainWindow()
         {
             InitializeComponent();
             InstantiateSerialPortList();
-            reader = new Reader(500, this);
+            reader = new NewReader(600, this);
         }
 
         public void InstantiateSerialPortList()
@@ -56,7 +57,27 @@ namespace RFIDReader
         private void connectBtn_Click(object sender, RoutedEventArgs e)
         {
             if (connectBtn.Content.Equals("Connect"))
-            {
+            {   //*
+                if (serialPortCB.SelectedIndex >= 0)
+                {
+                    serial = new RFIDSerial(serialPortCB.Text, 9600);
+                    reader.SetSerial(serial);
+                }
+                else
+                {
+                    MessageBox.Show("No serial port selected.");
+                    return;
+                }
+                if (serial.Connect() != RFIDSerial.Error.NOERR)
+                {
+                    MessageBox.Show("Unable to connect to device.");
+                    return;
+                }
+                connectBtn.Content = "Disconnect";
+                chipNumbers.Items.Add(new RFIDSerial.Info { DecNumber = 0 });
+                readingThread = new Thread(new ThreadStart(reader.Run));
+                readingThread.Start(); //*/
+                /*
                 byte[] ip = new byte[32];
                 int CommPort = 0;
                 int PortOrBaudRate = 0;
@@ -86,22 +107,24 @@ namespace RFIDReader
                 if (version != "Version:0.0")
                 {
                     connectBtn.Content = "Disconnect";
-                    chipNumbers.Items.Add(new DataItem { DecNumber = 0 });
+                    chipNumbers.Items.Add(new RFIDSerial.RFIDInfo { DecNumber = 0 });
                     readingThread = new Thread(new ThreadStart(reader.Run));
                     readingThread.Start();
                 }
                 else
                 {
                     MessageBox.Show("Unable to connect to device.");
-                }
+                } //*/
             }
             else
-            {
+            {   //*
+                serial.Disconnect(); //*/
+                /*
                 Dis.ResetReader(deviceNo);
                 Dis.DeviceDisconnect();
-                Dis.DeviceUninit();
+                Dis.DeviceUninit(); //*/
                 connectBtn.Content = "Connect";
-                chipNumbers.Items.Add(new DataItem { DecNumber = -1 });
+                chipNumbers.Items.Add(new RFIDSerial.Info { DecNumber = -1 });
                 reader.Kill();
             }
         }
@@ -122,6 +145,27 @@ namespace RFIDReader
             }));
         }
 
+        internal void AddRFIDItems(List<RFIDSerial.Info> reads)
+        {
+            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate ()
+            {
+                foreach (RFIDSerial.Info info in reads)
+                {
+                    info.ReadNumber = ReadNo++;
+                    chipNumbers.Items.Add(info);
+                }
+            }));
+        }
+
+        internal void AddRFIDItem(RFIDSerial.Info read)
+        {
+            Application.Current.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate ()
+            {
+                read.ReadNumber = ReadNo++;
+                chipNumbers.Items.Add(read);
+            }));
+        }
+
         internal class DataItem
         {
             public long DecNumber { get; set; }
@@ -129,6 +173,16 @@ namespace RFIDReader
             public int AntennaNumber { get; set; }
             public int DeviceNumber { get; set; }
             public int ReadNumber { get; set; }
+            public string DataRep { get; set; }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            reader.Kill();
+            if (readingThread != null)
+            {
+                readingThread.Join();
+            }
         }
     }
 }

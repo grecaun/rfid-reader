@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RFIDReader"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
     <Grid>
         <ListView x:Name="chipNumbers" Height="Auto" Width="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5,5,35">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Dec" Width="Auto" DisplayMemberBinding="{Binding DecNumber}" />
-                    <GridViewColumn Header="Hex" Width="Auto" DisplayMemberBinding="{Binding HexNumber}" />
-                    <GridViewColumn Header="Ant" Width="Auto" DisplayMemberBinding="{Binding AntennaNumber}" />
-                    <GridViewColumn Header="Dev" Width="Auto" DisplayMemberBinding="{Binding DeviceNumber}" />
-                    <GridViewColumn Header="No" Width="Auto" DisplayMemberBinding="{Binding ReadNumber}" />
+                    <GridViewColumn Header="Dec Number" Width="Auto" DisplayMemberBinding="{Binding DecNumber}" />
+                    <GridViewColumn Header="Hex Number" Width="Auto" DisplayMemberBinding="{Binding HexNumber}" />
+                    <GridViewColumn Header="Ant Number" Width="Auto" DisplayMemberBinding="{Binding AntennaNumber}" />
+                    <GridViewColumn Header="Dev NUmber" Width="Auto" DisplayMemberBinding="{Binding DeviceNumber}" />
+                    <GridViewColumn Header="Data" Width="Auto" DisplayMemberBinding="{Binding DataRep}" />
+                    <GridViewColumn Header="Read Number" Width="Auto" DisplayMemberBinding="{Binding ReadNumber}" />
                 </GridView>
             </ListView.View>
         </ListView>
